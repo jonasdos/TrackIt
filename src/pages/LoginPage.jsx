@@ -7,9 +7,9 @@ import ContainerLogin from "./Components/ContainerLogin";
 
 export default function Login() {
 
-  const [email, setEmail] = useState(undefined)
+  const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
-  
+  const [button, setButton] = useState('Entrar')
   return <>
   <ContainerLogin>
     <Logo/>
@@ -26,7 +26,7 @@ export default function Login() {
       type='text'
       placeholder='senha' 
       required />
-    <Button>Entrar</Button>
+    <Button>{button}</Button>
     <LinkLogin caminho='/cadastro'>Não tem uma conta? Cadastre-se!</LinkLogin>
   </ContainerLogin>
   </>
