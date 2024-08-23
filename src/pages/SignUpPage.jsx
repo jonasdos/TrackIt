@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import Logo from "./Components/Logo";
 import Input from "./Components/Input";
 import Button from "./Components/Button";
+import { PulseLoader } from "react-spinners";
 import LinkLogin from "./Components/Link";
 import ContainerLogin from "./Components/ContainerLogin";
 import axios from "axios";
 import {verificaEmail, verificaSenha, verificaNome, verificaFoto }from "./scripts/inputsCadastro";
+import { Navigate } from "react-router-dom";
 
 export default function SignUp() {
+  const [redirect, setRedirect] = useState(false);
+
   const [email, setEmail] = useState('')
   const [emailbox, setEmailBox] = useState(true)
   const [alertEmail, setAlertEmail] = useState('')
@@ -29,50 +33,63 @@ export default function SignUp() {
   async function enviaDados(email, senha, nome, foto) {
     if(verificaEmail(email)) {
       setAlertEmail('')
+      setEmailBox(true)   
     } else {
       setAlertEmail('Precisa incluir um e-mail válido')
-      setEmailBox(false)
+      setEmailBox(false)      
     }
     if(verificaSenha(senha)) {
       setAlertSenha('')
+      setSenhaBox(true)     
     } else {
       setAlertSenha('A senha precisa conter mais de 5 caracteres')
-      setSenhaBox(false)
+      setSenhaBox(false)      
     }
     if(verificaNome(nome)) {
       setAlertNome('')
+      setNomeBox(true)      
     } else {
       setAlertNome('O nome precisa conter mais de 3 caracteres')
-      setNomeBox(false)
+      setNomeBox(false)      
     }
     const validaFoto = await verificaFoto(foto)
     if(validaFoto) {
       setAlertFoto('')
+      setFotoBox(true)      
     } else {
       setAlertFoto('O link da sua foto precisa estar válido')
-      setFotoBox(false)
+      setFotoBox(false)    
+    }
+    if(verificaEmail(email) && verificaSenha(senha) && verificaNome(nome) && validaFoto) {
+      setButton(<PulseLoader color="white"/>)
+      const data = {
+        email: email, 
+        name: nome, 
+        image: foto, 
+        password: senha }
+     
+          
+            axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', data)
+            .then(res => { setButton('Cadastrado com sucesso... Você será redirecionado à página de login')
+                           setTimeout(() => setRedirect(true), 3000)})
+            .catch(error => {console.log(error.data)
+                            setButton('Erro ao cadastrar')
+            })
+          
+    
+       
     }
 
 
 
     
    
-    const data = {
-      email: email, 
-      name: nome, 
-      image: foto, 
-      password: senha }
-    setButton('Cadastrando...')
-    /*setTimeout(
-      useEffect(() => {
-        axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', data)
-      }, [])
-
-    , 2000)*/
+    
 
   }
   return <>
   <ContainerLogin>
+    {redirect && <Navigate to='/'/>}
     <Logo/>
 
     <Input 
