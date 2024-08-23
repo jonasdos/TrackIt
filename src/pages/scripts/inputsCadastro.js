@@ -1,4 +1,3 @@
-import axios from "axios";
 
 export function verificaEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
