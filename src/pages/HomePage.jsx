@@ -6,11 +6,11 @@ import Footer from "./Components/Footer";
 export default function Home() {
 const location = useLocation()
 const userData = location.state?.userData
-console.log(userData)
+
   return <>
 
   <Header avatar={userData.image}/>
-  <Main/>
+  <Main userData={userData.token}/>
   <Footer/>
 
   </>

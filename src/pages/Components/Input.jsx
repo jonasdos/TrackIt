@@ -34,8 +34,8 @@ const InputForm = styled.input`
   outline: none;
 }
 
-outline: none;
-font-size: 19.98px;
+  outline: none;
+  font-size: 19.98px;
   line-height: 24.97px;
   font-weight: 400;
   color: #666666;
@@ -43,7 +43,7 @@ font-size: 19.98px;
   border-radius: 5px;
   border: 1px solid ${({$valido}) => ($valido ? '#D4D4D4' : 'red')} ;
   display: block;
-  margin: 8px;
+
   width: 100%;
   max-width: 450px;
   min-width: 300px;
@@ -52,6 +52,8 @@ font-size: 19.98px;
 `
 const Aviso = styled.p`
 color: red;
+display: flex;
+background-color: #FFFF;
 font-family: Lexend Deca;
 font-size: 12px;
 text-align: right;

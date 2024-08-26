@@ -1,19 +1,75 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import TrackAdd from "./TrackAdd";
+import axios from 'axios'
 
-
-
-export default function Main () {
+export default function Main ({onClick, userData}) {
   const [titulo, setTitulo] = useState('Meus Hábitos')
+  const [msgAddHabitos, setMsgAddHabitos] = useState('Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!')
+  const [activeAddBtn, setActiveAddBtn] = useState(false)
+  const [newHabito, setNewHabito] = useState('')
+  const [habito, setHabito] = useState(true)
+  const [alerta, setalerta] = useState('')
+  const [newTrack, setNewTrack] = useState('')
 
+  function ligaNewTrack() {
+    setNewHabito('')
+    setActiveAddBtn(!activeAddBtn)
+    setHabito('true')
+    setalerta('')
+  }
+
+  function salvarHabito(diasMarcados) {
+    
+    newHabito === ''? setalerta('Precisa nomear o habito e escolher os dias') : setalerta('')
+    const dias = []
+    const extrai = diasMarcados.map((dia,i) => dia.selecionado === true ? dias.push(i) :  '')
+    const dadosTrack = {name: newHabito, days: dias}
+    dias.length === 0 ? setalerta('Precisa nomear o habito e escolher os dias') : setNewTrack(dadosTrack)
+
+    if(dadosTrack.name.length>0 && dadosTrack.days.length>0 ) {
+      console.log(userData)
+      const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
+      const body = dadosTrack
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userData}`
+        }
+      }
+      EnviaDados(URL, body, config)
+    } 
+    function EnviaDados(URL, body, config) {
+      
+        axios.post(URL, body, config)
+        .then(res => console.log(res))
+        .catch(err => console.log(err.data))
+
+      
+    }
+  }
+
+  
   return <>
   <Container>
     <ContainerContent>
     <Header>
     <h1>{titulo}</h1>
-    <BtnAddTrack>+</BtnAddTrack>
+    <BtnAddTrack onClick={() =>setActiveAddBtn(!activeAddBtn)}>+</BtnAddTrack>
     </Header>
     </ContainerContent>
+    {activeAddBtn && 
+    <TrackAdd 
+    placeholder={'nome do hábito'}
+    value={newHabito}
+    onChange={(e) => setNewHabito(e.target.value)}
+    onclickCancel={ligaNewTrack}
+    onclickSave={salvarHabito}
+    inputTrack={habito}
+    inputTrackMsg={alerta}
+    />}
+    
+    
+    <Msg><p>{msgAddHabitos}</p></Msg>
   </Container>
   </>
 }
@@ -33,8 +89,7 @@ font-family: Lexend Deca;
 `
 const ContainerContent = styled.div`
 display: flex;
-max-width: 750px;
-
+max-width: 700px;
 width: 100%;
 `
 const Header = styled.header`
@@ -68,3 +123,17 @@ transition: 0.3s;
   color: black
 }
 `
+const Msg = styled.div`
+width: 100%;
+max-width: 700px;
+p {
+  font-size: 17.98px;
+  font-weight: 400;
+ line-height: 22.47px;
+ color: #666666;
+max-width: 340px;
+ margin: 30px 0px;
+
+}
+`
+
