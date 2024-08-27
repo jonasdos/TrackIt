@@ -28,8 +28,10 @@ export default function Login() {
     const userDados = { email: email, password: senha}
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', userDados)
     .then(res => {
-      setUserData(res.data)
-      navigate('/habitos')
+      localStorage.setItem('userData', JSON.stringify(res.data));
+      console.log(localStorage.getItem('userData')); // Verifica o que foi armazenado
+      setUserData(res.data);
+      navigate('/habitos');
     })
     .catch(err => console.log(err))
    }

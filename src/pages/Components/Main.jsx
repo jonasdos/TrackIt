@@ -4,7 +4,7 @@ import TrackAdd from "./TrackAdd";
 import axios from 'axios'
 import Tracks from "./Track";
 
-export default function Main ({onClick, userData}) {
+export default function Main ({userData}) {
   const [titulo, setTitulo] = useState('Meus Hábitos')
   const [msgAddHabitos, setMsgAddHabitos] = useState('Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!')
   const [activeAddBtn, setActiveAddBtn] = useState(false)
