@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TrackAdd from "./TrackAdd";
 import axios from 'axios'
+import Tracks from "./Track";
 
 export default function Main ({onClick, userData}) {
   const [titulo, setTitulo] = useState('Meus Hábitos')
@@ -11,11 +12,12 @@ export default function Main ({onClick, userData}) {
   const [habito, setHabito] = useState(true)
   const [alerta, setalerta] = useState('')
   const [newTrack, setNewTrack] = useState('')
+  const [existeTrack, setExisteTrack] = useState(false)
 
   function ligaNewTrack() {
     setNewHabito('')
     setActiveAddBtn(!activeAddBtn)
-    setHabito('true')
+    setHabito(true)
     setalerta('')
   }
 
@@ -28,7 +30,7 @@ export default function Main ({onClick, userData}) {
     dias.length === 0 ? setalerta('Precisa nomear o habito e escolher os dias') : setNewTrack(dadosTrack)
 
     if(dadosTrack.name.length>0 && dadosTrack.days.length>0 ) {
-      console.log(userData)
+      
       const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
       const body = dadosTrack
       const config = {
@@ -41,12 +43,20 @@ export default function Main ({onClick, userData}) {
     function EnviaDados(URL, body, config) {
       
         axios.post(URL, body, config)
-        .then(res => console.log(res))
+        .then(res => {
+          setActiveAddBtn(!activeAddBtn)
+         
+        })
         .catch(err => console.log(err.data))
 
       
     }
   }
+
+function sinalizaTrack(valor) {
+  setExisteTrack(valor)
+  
+}
 
   
   return <>
@@ -69,7 +79,11 @@ export default function Main ({onClick, userData}) {
     />}
     
     
-    <Msg><p>{msgAddHabitos}</p></Msg>
+    <Tracks userData={userData}  carregatracks={sinalizaTrack}/> 
+    <Msg $disp={sinalizaTrack}><p>{msgAddHabitos}</p></Msg>
+    
+
+    
   </Container>
   </>
 }
@@ -124,6 +138,7 @@ transition: 0.3s;
 }
 `
 const Msg = styled.div`
+display: ${props => props.$disp === false ? 'block': 'none'};
 width: 100%;
 max-width: 700px;
 p {

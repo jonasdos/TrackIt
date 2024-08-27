@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useContext } from "react";
+import  UserContext from '../contexts/UserContext.jsx';
 import Logo from "./Components/Logo";
 import Input from "./Components/Input";
 import Button from "./Components/Button";
@@ -9,8 +11,9 @@ import { PulseLoader } from "react-spinners";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 
-export default function Login() {
 
+export default function Login() {
+  const { setUserData } = useContext(UserContext);
   const [email, setEmail] = useState('')
   const [alertEmail, setAlertEmail] = useState('')
   const [senha, setSenha] = useState('')
@@ -25,8 +28,9 @@ export default function Login() {
     const userDados = { email: email, password: senha}
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', userDados)
     .then(res => {
-      navigate('/habitos', {state: {userData: res.data}}
-    )})
+      setUserData(res.data)
+      navigate('/habitos')
+    })
     .catch(err => console.log(err))
    }
   }
