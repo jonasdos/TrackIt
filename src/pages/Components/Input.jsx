@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 
-export default function Input({id, type, value, placeholder, onChange, valido = true, msgAviso }) {
+export default function Input({id, type, value, placeholder, onChange, valido = true, msgAviso, $trava }) {
 
   return <>
   <InputContainer>
@@ -12,6 +12,7 @@ export default function Input({id, type, value, placeholder, onChange, valido = 
   onChange={onChange}
   placeholder={placeholder}
   $valido={valido}
+  disabled={$trava}
   
   />
   {msgAviso && <Aviso>{msgAviso}</Aviso>}
@@ -43,7 +44,7 @@ const InputForm = styled.input`
   border-radius: 5px;
   border: 1px solid ${({$valido}) => ($valido ? '#D4D4D4' : 'red')} ;
   display: block;
-
+  margin-bottom: 5px;
   width: 100%;
   max-width: 450px;
   min-width: 300px;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import TrackAdd from "./TrackAdd";
+
 import axios from 'axios'
-import Tracks from "./Track";
+
 import formatarDataAtual from "../scripts/diaHoje";
 
 export default function MainHoje ({userData}) {
@@ -21,13 +21,28 @@ export default function MainHoje ({userData}) {
     .then(res => setTracks(res.data))
     .catch(err => console.log(err));
   }
-  
+
 function enviaTarefaConcluida(id, done) {
 const check = (done ? 'uncheck': 'check')
 
+setTracks(prevTracks =>
+  prevTracks.map(track =>
+    track.id === id ? { ...track, done: !done } : track
+  )
+)
+
    axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/${check}`, {}, config)
-    .then(res => atualizaTracks(res.data))
-    .catch(err => console.log(err.data))
+    .then(res => {
+      
+      atualizaTracks()
+    })
+    .catch(err => {console.log(err.data)
+      setTracks(prevTracks =>
+        prevTracks.map(track =>
+          track.id === id ? { ...track, done: !done } : track
+        )
+      )
+    })
   }
 
 
@@ -69,6 +84,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 border-radius: 5px;
+transition: 0.5s;
 
 `
 const Track = styled.div`
@@ -107,6 +123,8 @@ display: flex;
 flex-direction: column;
 max-width: 700px;
 width: 100%;
+max-height: calc(100% - 125px);
+overflow: auto;
 `
 const Header = styled.header`
 color: #126BA5;
@@ -117,6 +135,8 @@ line-height: 22.47px;
 font-weight: 400;
 margin-top: 30px ;
 margin-bottom: 20px;
+overflow: hidden;
+z-index: 10;
 `
 
 

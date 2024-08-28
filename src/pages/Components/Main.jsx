@@ -3,6 +3,7 @@ import styled from "styled-components";
 import TrackAdd from "./TrackAdd";
 import axios from 'axios'
 import Tracks from "./Track";
+import { PulseLoader } from "react-spinners";
 
 export default function Main ({userData}) {
   const [titulo, setTitulo] = useState('Meus Hábitos')
@@ -13,9 +14,9 @@ export default function Main ({userData}) {
   const [alerta, setalerta] = useState('')
   const [newTrack, setNewTrack] = useState('')
   const [existeTrack, setExisteTrack] = useState(false)
-
+  const [trava, setTrava] = useState(false)
   function ligaNewTrack() {
-    setNewHabito('')
+    
     setActiveAddBtn(!activeAddBtn)
     setHabito(true)
     setalerta('')
@@ -41,14 +42,15 @@ export default function Main ({userData}) {
       EnviaDados(URL, body, config)
     } 
     function EnviaDados(URL, body, config) {
-      
+        setTrava(true)
         axios.post(URL, body, config)
         .then(res => {
+          setNewHabito('')
           setActiveAddBtn(!activeAddBtn)
-         
+          setTrava(false)
         })
-        .catch(err => console.log(err.data))
-
+        .catch(err => {console.log(err.data)
+        setTrava(false)})
       
     }
   }
@@ -74,6 +76,7 @@ function sinalizaTrack(valor) {
     onChange={(e) => setNewHabito(e.target.value)}
     onclickCancel={ligaNewTrack}
     onclickSave={salvarHabito}
+    $trava={trava}
     inputTrack={habito}
     inputTrackMsg={alerta}
     />}

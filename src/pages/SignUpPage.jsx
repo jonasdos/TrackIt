@@ -29,7 +29,7 @@ export default function SignUp() {
   const [alertFoto, setAlertFoto] = useState('')
 
   const [button, setButton] = useState('Cadastrar')
-
+  const [trava, setTrava] = useState(false)
   async function enviaDados(email, senha, nome, foto) {
     if(verificaEmail(email)) {
       setAlertEmail('')
@@ -62,6 +62,7 @@ export default function SignUp() {
     }
     if(verificaEmail(email) && verificaSenha(senha) && verificaNome(nome) && validaFoto) {
       setButton(<PulseLoader color="white"/>)
+      setTrava(true)
       const data = {
         email: email, 
         name: nome, 
@@ -71,9 +72,13 @@ export default function SignUp() {
           
             axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', data)
             .then(res => { setButton('Cadastrado com sucesso... Você será redirecionado à página de login')
-                           setTimeout(() => setRedirect(true), 3000)})
+                          
+                           setTimeout(() => setRedirect(true), 3000)
+                           setTrava(false)})
             .catch(error => {console.log(error.data)
                             setButton('Erro ao cadastrar')
+                            setTrava(false)
+                            setTimeout(() => setButton('Cadastrar'), 3000)
             })
           
     
@@ -93,6 +98,7 @@ export default function SignUp() {
     <Logo/>
 
     <Input 
+    $trava={trava}
       value={email}
       onChange={(e) =>  setEmail(e.target.value)}
       valido={emailbox}         
@@ -102,6 +108,7 @@ export default function SignUp() {
       required />
 
     <Input 
+    $trava={trava}
       value={senha}
       onChange={(e) => setSenha(e.target.value)}
       valido={senhaBox}    
@@ -110,6 +117,7 @@ export default function SignUp() {
       msgAviso={alertSenha}
       required />
        <Input 
+       $trava={trava}
       value={nome}
       onChange={(e) => setNome(e.target.value)}
       valido={nomeBox}
@@ -118,6 +126,7 @@ export default function SignUp() {
       msgAviso={alertNome}
       required />
       <Input 
+      $trava={trava}
       value={foto}
       onChange={(e) => setFoto(e.target.value)}
       valido={fotoBox}

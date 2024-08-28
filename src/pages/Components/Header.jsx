@@ -1,14 +1,19 @@
+import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
+import { useLocation } from "react-router-dom";
 
 
 export default function Header ({avatar}) {
   
+  const location = useLocation()
+  const navigate = useNavigate()
+
+
   return <>
   <Container>
     <div>
     <h1>TrackIt</h1>
-    <img src={avatar} />
+    <img src={avatar}  />
     </div>
   </Container>
   </>

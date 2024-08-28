@@ -14,9 +14,8 @@ border-radius: 5px;
 border: 2px solid #D4D4D4;
 display: block;
 margin: 5px;
-width: 100%;
-max-width: 450px;
-min-width: 300px;
+width: 300px;
+
 font-size: 20.98px;
 color: #FFFFFF;
 transition: background-color 0.3s;

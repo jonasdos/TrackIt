@@ -53,6 +53,9 @@ display: flex;
 flex-direction: column;
 justify-content: flex-start;
 align-items: center;
+overflow: auto;
+overflow-x: hidden;
+margin-bottom: 60px;
 `
 const Container = styled.div`
 

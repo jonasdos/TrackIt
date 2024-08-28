@@ -13,13 +13,7 @@ export function verificaNome(nome) {
 }
 
 export async function verificaFoto(foto) {
-  try {
-    const response = await fetch(foto, { method: 'HEAD' })
-
-    if (response.ok && response.headers.get('Content-Type').startsWith('image/')) {
-      return true
-    } else { return false }
-  } catch (error) {
-    return false
-  }
+  const validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+  const extension = foto.split('.').pop();
+  return validExtensions.includes(extension.toLowerCase());
 }

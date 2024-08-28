@@ -4,15 +4,19 @@ import { dias } from '../scripts/diasSemana'
 import CancelTrack from './Link-track'
 import Button from './Button-Track'
 import { useEffect, useState } from 'react'
-export default function TrackAdd({placeholder, value, onChange, onclickCancel, onclickSave, inputTrack, inputTrackMsg}) {
+import { PulseLoader } from 'react-spinners'
+export default function TrackAdd({placeholder, value, onChange, onclickCancel, onclickSave, inputTrack, inputTrackMsg, $trava}) {
 
 const [diasMarcados, setDiasMarcados] = useState(dias.map((dia, index) => ({dia, selecionado: false})))
 
 function selecionaDia(i) {
+  if($trava === true) {
+    return
+  } else {
   setDiasMarcados(prev =>
     prev.map((dia, index) => i === index ?
     {...dia, selecionado: !dia.selecionado} : dia
-  ))
+  ))}
 }
 
   return <>
@@ -23,6 +27,7 @@ function selecionaDia(i) {
     onChange={onChange}
     valido={inputTrack}
     msgAviso={inputTrackMsg}
+    $trava={$trava}
     />
     <Dias>
     {diasMarcados.map((dia, i) => 
@@ -33,7 +38,7 @@ function selecionaDia(i) {
     </Dias>
     <ContainerOptions>
     <CancelTrack onClick={onclickCancel}>Cancelar</CancelTrack>
-    <Button onClick={() =>onclickSave(diasMarcados)}>Salvar</Button>
+    <Button onClick={() =>onclickSave(diasMarcados)}>{$trava === true ? <PulseLoader color="white"/> : 'Salvar'}</Button>
     </ContainerOptions>
   </Container>
   </>
