@@ -12,4 +12,5 @@
 - Uso de Context API: Para gerenciamento de estados globais como informações do usuário logado.
 - Styled-Components: Para estilização da interface, garantindo uma aparência moderna e consistente.
 - Animações de Loading: Implementadas com a biblioteca react-loader-spinner para uma melhor experiência do usuário.
-- Deploy: O projeto foi publicado na Vercel e está acessível aqui.
+
+## Deploy: O projeto foi publicado na Vercel e está acessível no link: https://track-it-bice.vercel.app/
